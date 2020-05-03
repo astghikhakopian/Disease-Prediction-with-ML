@@ -2,6 +2,7 @@ from flask import Flask, render_template, url_for, request, jsonify
 
 import numpy as np
 import pickle
+import wikipedia
 
 
 app = Flask(__name__)
@@ -160,11 +161,19 @@ def home():
 
     predictRaw = loaded_model.predict([input_vector])[0]
 
-    return jsonify({"data": disease_name_dictionary[predictRaw]})
+#     description = ""
+#     if type(wikipedia.summary(predictRaw)) == str:
+#         description = wikipedia.summary(predictRaw)
+    
+    return jsonify({
+        "englishName": predictRaw,
+        "armenianName": disease_name_dictionary[predictRaw],
+        "description": ""
+    })
 
 if __name__ == "__main__":
     app.debug = True
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=5001)
 
 
 
